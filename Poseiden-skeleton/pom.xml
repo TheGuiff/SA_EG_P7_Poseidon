@@ -15,7 +15,9 @@
 	<artifactId>SA_EG_P7_Poseidon</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SA_EG_P7_Poseidon</name>
+
 	<description>SA_EG_P7_Poseidon</description>
+
 	<properties>
 		<java.version>11</java.version>
 	</properties>
