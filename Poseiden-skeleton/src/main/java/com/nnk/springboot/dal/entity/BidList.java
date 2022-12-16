@@ -33,7 +33,7 @@ public class BidList {
     Double askQuantity;
 
     @Column
-    Double bidQ;
+    Double bid;
 
     @Column
     Double ask;
