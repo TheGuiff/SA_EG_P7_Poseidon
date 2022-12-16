@@ -26,8 +26,7 @@ public class RatingService {
     }
 
     public Rating saveRating(Rating rating) {
-        Rating savedRating = ratingRepository.save(rating);
-        return savedRating;
+        return ratingRepository.save(rating);
     }
 
 }
