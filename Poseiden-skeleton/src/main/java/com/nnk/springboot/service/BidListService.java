@@ -1,9 +1,7 @@
 package com.nnk.springboot.service;
 
 import com.nnk.springboot.dal.entity.BidList;
-import com.nnk.springboot.dal.entity.Rating;
 import com.nnk.springboot.dal.repositories.BidListRepository;
-import com.nnk.springboot.dal.repositories.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
