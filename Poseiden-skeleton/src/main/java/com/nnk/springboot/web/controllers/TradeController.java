@@ -1,6 +1,9 @@
 package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.Trade;
+import com.nnk.springboot.service.TradeService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,27 +13,39 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.NoSuchElementException;
 
 @Controller
+@Slf4j
 public class TradeController {
-    // TODO: Inject Trade service
+
+    @Autowired
+    private TradeService tradeService;
 
     @RequestMapping("/trade/list")
     public String home(Model model)
     {
-        // TODO: find all Trade, add to model
+        log.info("List of trades");
+        try {
+            Iterable<Trade> trades = tradeService.getTrades();
+            model.addAttribute("trades", trades);
+        } catch (NoSuchElementException e) {
+            log.error("/trade/list : ",e.getMessage());
+            model.addAttribute("Error", e.getMessage());
+        }
         return "trade/list";
     }
 
+
     @GetMapping("/trade/add")
-    public String addUser(Trade bid) {
+    public String addUser(Trade bid) { //A quoi sert le paramètre ? Pas de TO DO ?
         return "trade/add";
     }
 
     @PostMapping("/trade/validate")
-    public String validate(@Valid Trade trade, BindingResult result, Model model) {
+    public String validate(@Valid Trade trade, BindingResult result, Model model) { //BindingResult ?
         // TODO: check data valid and save to db, after saving return Trade list
-        return "trade/add";
+        return "trade/add"; //Retourner sur trade/list ?
     }
 
     @GetMapping("/trade/update/{id}")

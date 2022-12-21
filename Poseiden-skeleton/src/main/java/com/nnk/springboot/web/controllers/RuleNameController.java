@@ -1,6 +1,10 @@
 package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.RuleName;
+import com.nnk.springboot.dal.entity.Trade;
+import com.nnk.springboot.service.RuleNameService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,15 +14,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.NoSuchElementException;
 
+@Slf4j
 @Controller
 public class RuleNameController {
-    // TODO: Inject RuleName service
+
+    @Autowired
+    private RuleNameService ruleNameService;
 
     @RequestMapping("/ruleName/list")
     public String home(Model model)
     {
-        // TODO: find all RuleName, add to model
+        log.info("List of rulenames");
+        try {
+            Iterable<RuleName> ruleNames = ruleNameService.getRuleNames();
+            model.addAttribute("rule", ruleNames);
+        } catch (NoSuchElementException e) {
+            log.error("/trade/list : ",e.getMessage());
+            model.addAttribute("Error", e.getMessage());
+        }
         return "ruleName/list";
     }
 
