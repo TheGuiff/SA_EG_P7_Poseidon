@@ -1,6 +1,10 @@
 package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.BidList;
+import com.nnk.springboot.dal.entity.Trade;
+import com.nnk.springboot.service.BidListService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,16 +14,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.NoSuchElementException;
 
-
+@Slf4j
 @Controller
 public class BidListController {
-    // TODO: Inject Bid service
+
+    @Autowired
+    private BidListService bidListService;
 
     @RequestMapping("/bidList/list")
     public String home(Model model)
     {
-        // TODO: call service find all bids to show to the view
+        log.info("List of bids");
+        try {
+            Iterable<BidList> bidLists = bidListService.getBidLists();
+            model.addAttribute("bid", bidLists);
+        } catch (NoSuchElementException e) {
+            log.error("/bidlist/list : ",e.getMessage());
+            model.addAttribute("Error", e.getMessage());
+        }
         return "bidList/list";
     }
 
