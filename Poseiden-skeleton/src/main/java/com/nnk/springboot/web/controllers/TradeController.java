@@ -1,19 +1,25 @@
 package com.nnk.springboot.web.controllers;
 
+import com.nnk.springboot.dal.entity.BidList;
 import com.nnk.springboot.dal.entity.Trade;
 import com.nnk.springboot.service.TradeService;
+import com.nnk.springboot.web.dto.TradeDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -38,32 +44,63 @@ public class TradeController {
 
 
     @GetMapping("/trade/add")
-    public String addUser(Trade bid) { //A quoi sert le paramètre ? Pas de TO DO ?
+    public String addUser(Trade trade, Model model) {
         return "trade/add";
     }
 
     @PostMapping("/trade/validate")
-    public String validate(@Valid Trade trade, BindingResult result, Model model) { //BindingResult ?
-        // TODO: check data valid and save to db, after saving return Trade list
-        return "trade/add"; //Retourner sur trade/list ?
+    public String validate(@Valid Trade trade, BindingResult result, Model model) { //BindingResult ? @Valid ?
+        log.info("Add trade");
+        if (!result.hasErrors()) {
+            tradeService.saveTrade(trade);
+            model.addAttribute("trades", tradeService.getTrades());
+        } else {
+            List<ObjectError> errorList = result.getAllErrors();
+            log.error("/trade/validate/ : ",errorList.get(0));
+            model.addAttribute("error", errorList.get(0));
+        }
+        return "trade/list";
     }
 
     @GetMapping("/trade/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Trade by Id and to model then show to the form
+        log.info("Update trade by id : " + String.valueOf(id));
+        try {
+            Optional<Trade> trade = tradeService.getTrade(id);
+            model.addAttribute("trade", trade);
+        } catch (NoSuchElementException e) {
+            log.error("/trade/update/" + String.valueOf(id) + " : ",e.getMessage());
+            model.addAttribute("Error", e.getMessage());
+        }
         return "trade/update";
     }
 
     @PostMapping("/trade/update/{id}")
     public String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Trade and return Trade list
-        return "redirect:/trade/list";
+        if (!result.hasErrors()) {
+            trade.setTradeId(id);
+            tradeService.saveTrade(trade);
+            model.addAttribute("trades", tradeService.getTrades());
+            return "redirect:/trade/list";
+        } else {
+            List<ObjectError> errorList = result.getAllErrors();
+            model.addAttribute("error", errorList.get(0));
+            return "trade/update";
+        }
     }
 
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Trade by Id and delete the Trade, return to Trade list
-        return "redirect:/trade/list";
+        log.info("Delete Trade by id : " + String.valueOf(id));
+        try {
+            tradeService.deleteTrade(id);
+            return "redirect:/trade/list";
+        } catch (NoSuchElementException e) {
+            log.error("/trade/delete/" + String.valueOf(id) + " : ",e.getMessage());
+            model.addAttribute("Error", e.getMessage());
+            return "trade/list";
+        }
+
     }
 }
