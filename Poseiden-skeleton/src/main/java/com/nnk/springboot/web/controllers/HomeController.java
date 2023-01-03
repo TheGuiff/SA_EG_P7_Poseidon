@@ -17,7 +17,7 @@ public class HomeController
 	public String adminHome(Model model)
 	{
 		return "redirect:/bidList/list";
-	}
+	} //Pourquoi sur bidlist ?
 
 
 }
