@@ -35,7 +35,7 @@ public class BidListController {
             Iterable<BidList> bidLists = bidListService.getBidLists();
             List<BidList> bidListList = new ArrayList<>();
             bidLists.forEach(bidListList::add);
-            model.addAttribute("bid", bidLists);
+            model.addAttribute("bids", bidLists);
         } catch (NoSuchElementException e) {
             log.error("/bidlist/list : ",e.getMessage());
             model.addAttribute("Error", e.getMessage());
@@ -67,7 +67,7 @@ public class BidListController {
         log.info("Update bid by id : " + String.valueOf(id));
         try {
             Optional<BidList> bidList = bidListService.getBidList(id);
-            model.addAttribute("trade", bidList.get());
+            model.addAttribute("bidList", bidList.get());
         } catch (NoSuchElementException e) {
             log.error("/bidList/update/" + String.valueOf(id) + " : ",e.getMessage());
             model.addAttribute("Error", e.getMessage());
