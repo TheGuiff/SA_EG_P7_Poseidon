@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -34,7 +35,9 @@ public class TradeController {
         log.info("List of trades");
         try {
             Iterable<Trade> trades = tradeService.getTrades();
-            model.addAttribute("trades", trades);
+            List<Trade> tradeList = new ArrayList<>();
+            trades.forEach(tradeList::add);
+            model.addAttribute("trades", tradeList);
         } catch (NoSuchElementException e) {
             log.error("/trade/list : ",e.getMessage());
             model.addAttribute("Error", e.getMessage());
@@ -67,7 +70,7 @@ public class TradeController {
         log.info("Update trade by id : " + String.valueOf(id));
         try {
             Optional<Trade> trade = tradeService.getTrade(id);
-            model.addAttribute("trade", trade);
+            model.addAttribute("trade", trade.get());
         } catch (NoSuchElementException e) {
             log.error("/trade/update/" + String.valueOf(id) + " : ",e.getMessage());
             model.addAttribute("Error", e.getMessage());
