@@ -59,7 +59,7 @@ public class CurveController {
             log.error("/curvePoint/validate/ : ",errorList.get(0));
             model.addAttribute("error", errorList.get(0));
         }
-        return "curvePoint/add";
+        return "curvePoint/list";
     }
 
     @GetMapping("/curvePoint/update/{id}")
