@@ -104,6 +104,6 @@ public class TradeController {
             model.addAttribute("Error", e.getMessage());
             return "trade/list";
         }
-
     }
+
 }
