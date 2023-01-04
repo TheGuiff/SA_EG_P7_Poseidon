@@ -78,9 +78,11 @@ public class Trade {
     private String side;
 
     public Trade (String accountIn,
-                  String typeIn) {
+                  String typeIn,
+                  Double buyQuantityIn) {
         this.setAccount(accountIn);
         this.setType(typeIn);
+        this.setBuyQuantity(buyQuantityIn);
     }
 
     public Trade() {

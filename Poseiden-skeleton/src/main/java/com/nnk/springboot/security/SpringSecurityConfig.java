@@ -45,10 +45,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
+                    .defaultSuccessUrl("/bidList/list")
                 .and()
                 .logout()
-                .logoutSuccessUrl("/")
-                .permitAll();
+                    .logoutSuccessUrl("/")
+                    .permitAll();
     }
 
 }
