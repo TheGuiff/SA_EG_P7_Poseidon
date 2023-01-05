@@ -1,4 +1,4 @@
-package com.nnk.springboot.unitTests;
+package com.nnk.springboot.repository;
 
 import com.nnk.springboot.dal.entity.CurvePoint;
 import com.nnk.springboot.dal.repositories.CurvePointRepository;
@@ -16,7 +16,7 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class CurvePointTests {
+public class CurvePointRepositoryTests {
 
 	@Autowired
 	private CurvePointRepository curvePointRepository;

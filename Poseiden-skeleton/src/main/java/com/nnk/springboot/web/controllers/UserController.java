@@ -34,9 +34,10 @@ public class UserController {
     @PostMapping("/user/validate")
     public String validate(@Valid User user, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode(user.getPassword()));
-            userRepository.save(user);
+//            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//            user.setPassword(encoder.encode(user.getPassword()));
+//            userRepository.save(user);
+            userRepository.hashPasswordAndSave(user);
             model.addAttribute("users", userRepository.findAll());
             return "redirect:/user/list";
         }
@@ -57,11 +58,11 @@ public class UserController {
         if (result.hasErrors()) {
             return "user/update";
         }
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setId(id);
-        userRepository.save(user);
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        user.setPassword(encoder.encode(user.getPassword()));
+//        user.setId(id);
+//        userRepository.save(user);
+        userRepository.hashPasswordAndSave(user);
         model.addAttribute("users", userRepository.findAll());
         return "redirect:/user/list";
     }

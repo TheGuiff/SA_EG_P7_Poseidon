@@ -44,17 +44,9 @@ public class UsersTest {
         ratingRepository.deleteAll();
         ruleNameRepository.deleteAll();
         tradeRepository.deleteAll();
-        User user = new User();
-        user.setUsername("Toto");
-        user.setFullname("Toto admin");
-        user.setPassword("1234");
-        user.setRole("ADMIN");
+        User user = new User("Toto","1234","Toto admin", "ADMIN");
         user = userRepository.hashPasswordAndSave(user);
-        User user2 = new User();
-        user2.setUsername("Titi");
-        user2.setFullname("Titi user");
-        user2.setPassword("1234");
-        user2.setRole("USER");
+        User user2 = new User("Titi", "1234","Titi user","USER");
         user2 = userRepository.hashPasswordAndSave(user2);
         assertEquals(1, 1);
     }

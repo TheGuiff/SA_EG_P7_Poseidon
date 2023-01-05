@@ -40,17 +40,9 @@ public class UsersProd {
         ratingRepository.deleteAll();
         ruleNameRepository.deleteAll();
         tradeRepository.deleteAll();
-        User user = new User();
-        user.setUsername("Admin");
-        user.setFullname("Administrateur");
-        user.setPassword("Admin");
-        user.setRole("ADMIN");
+        User user = new User("Admin","Admin","Administrateur","ADMIN");
         user = userRepository.hashPasswordAndSave(user);
-        User userU = new User();
-        userU.setUsername("User");
-        userU.setFullname("Utilisateur");
-        userU.setPassword("User");
-        userU.setRole("USER");
+        User userU = new User("User","User","Utilisateur","USER");
         userU = userRepository.hashPasswordAndSave(userU);
         assertEquals(1, 1);
     }

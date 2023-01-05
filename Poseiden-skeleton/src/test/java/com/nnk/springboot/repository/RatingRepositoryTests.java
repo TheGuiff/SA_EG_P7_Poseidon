@@ -1,9 +1,10 @@
-package com.nnk.springboot.unitTests;
+package com.nnk.springboot.repository;
 
 import com.nnk.springboot.dal.entity.Rating;
 import com.nnk.springboot.dal.repositories.RatingRepository;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,10 +17,15 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class RatingTests {
+public class RatingRepositoryTests {
 
 	@Autowired
 	private RatingRepository ratingRepository;
+
+	@AfterAll
+	public void initDataBase() {
+		ratingRepository.deleteAll();
+	}
 
 	@Test
 	public void ratingTest() {
