@@ -57,4 +57,18 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public User (String usernameIn,
+                 String passwordIn,
+                 String fullNameIn,
+                 String roleIn) {
+        this.setUsername(usernameIn);
+        this.setPassword(passwordIn);
+        this.setFullname(fullNameIn);
+        this.setRole(roleIn);
+    }
+
+    public User() {
+
+    }
 }

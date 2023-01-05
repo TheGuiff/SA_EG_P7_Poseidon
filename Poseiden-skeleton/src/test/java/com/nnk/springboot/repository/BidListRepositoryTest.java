@@ -1,9 +1,10 @@
-package com.nnk.springboot.unitTests;
+package com.nnk.springboot.repository;
 
 import com.nnk.springboot.dal.entity.BidList;
 import com.nnk.springboot.dal.repositories.BidListRepository;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +17,7 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class BidTests {
+public class BidListRepositoryTest {
 
 	@Autowired
 	private BidListRepository bidListRepository;

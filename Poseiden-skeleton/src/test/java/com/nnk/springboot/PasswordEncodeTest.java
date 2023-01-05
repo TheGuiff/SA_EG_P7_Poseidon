@@ -1,4 +1,4 @@
-package com.nnk.springboot.unitTests;
+package com.nnk.springboot;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
