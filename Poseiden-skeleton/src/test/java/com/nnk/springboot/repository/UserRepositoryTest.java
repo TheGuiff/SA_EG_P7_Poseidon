@@ -29,7 +29,7 @@ public class UserRepositoryTest {
 
     @Test
     public void userTest() {
-        User user = new User("Name","password","fullname","USER");
+        User user = new User("Name","123:Password","fullname","USER");
 
         // Save
         user = userRepository.hashPasswordAndSave(user);

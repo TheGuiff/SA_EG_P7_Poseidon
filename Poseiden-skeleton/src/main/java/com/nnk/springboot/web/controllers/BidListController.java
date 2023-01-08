@@ -3,6 +3,8 @@ package com.nnk.springboot.web.controllers;
 import com.nnk.springboot.dal.entity.BidList;
 import com.nnk.springboot.dal.entity.Trade;
 import com.nnk.springboot.service.BidListService;
+import com.nnk.springboot.service.LoginService;
+import com.nnk.springboot.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,11 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.security.Principal;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -27,8 +28,11 @@ public class BidListController {
     @Autowired
     private BidListService bidListService;
 
+    @Autowired
+    private LoginService loginService;
+
     @RequestMapping("/bidList/list")
-    public String home(Model model)
+    public String home(Model model, Principal user)
     {
         log.info("List of bids");
         try {
@@ -36,6 +40,7 @@ public class BidListController {
             List<BidList> bidListList = new ArrayList<>();
             bidLists.forEach(bidListList::add);
             model.addAttribute("bids", bidLists);
+            model.addAttribute("username", loginService.getGitHub(user));
         } catch (NoSuchElementException e) {
             log.error("/bidlist/list : ",e.getMessage());
             model.addAttribute("Error", e.getMessage());

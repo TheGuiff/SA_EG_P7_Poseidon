@@ -12,7 +12,10 @@
 	<div class="row">
 		<h2>Update New Rule</h2>
 	</div>
-
+	<div class="row text-danger" th:if="${Error}">
+		<br>
+		<p th:text="${Error}"></p>
+	</div>
 	<div class="row">
 		<form action="#" th:action="@{/ruleName/update/{id}(id=${ruleName.id})}" th:object="${ruleName}" method="post" class="form-horizontal" style="width: 100%">
 			<div class="form-group">

@@ -1,6 +1,7 @@
 package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.Trade;
+import com.nnk.springboot.service.LoginService;
 import com.nnk.springboot.service.TradeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,8 +28,11 @@ public class TradeController {
     @Autowired
     private TradeService tradeService;
 
+    @Autowired
+    private LoginService loginService;
+
     @RequestMapping("/trade/list")
-    public String home(Model model)
+    public String home(Model model, Principal user)
     {
         log.info("List of trades");
         try {
@@ -35,6 +40,7 @@ public class TradeController {
             List<Trade> tradeList = new ArrayList<>();
             trades.forEach(tradeList::add);
             model.addAttribute("trades", tradeList);
+            model.addAttribute("username", loginService.getGitHub(user));
         } catch (NoSuchElementException e) {
             log.error("/trade/list : ",e.getMessage());
             model.addAttribute("Error", e.getMessage());

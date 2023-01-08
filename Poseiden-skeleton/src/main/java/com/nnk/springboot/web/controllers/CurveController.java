@@ -3,6 +3,7 @@ package com.nnk.springboot.web.controllers;
 import com.nnk.springboot.dal.entity.CurvePoint;
 import com.nnk.springboot.dal.entity.Trade;
 import com.nnk.springboot.service.CurvePointService;
+import com.nnk.springboot.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,8 +29,11 @@ public class CurveController {
     @Autowired
     private CurvePointService curvePointService;
 
+    @Autowired
+    private LoginService loginService;
+
     @RequestMapping("/curvePoint/list")
-    public String home(Model model)
+    public String home(Model model, Principal user)
     {
         log.info("List of curve points");
         try {
@@ -36,6 +41,7 @@ public class CurveController {
             List<CurvePoint> curvePointList = new ArrayList<>();
             curvePoints.forEach(curvePointList::add);
             model.addAttribute("curves", curvePointList);
+            model.addAttribute("username", loginService.getGitHub(user));
         } catch (NoSuchElementException e) {
             log.error("/curvePoint/list : ",e.getMessage());
             model.addAttribute("Error", e.getMessage());
