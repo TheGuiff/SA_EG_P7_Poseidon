@@ -2,6 +2,8 @@ package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.User;
 import com.nnk.springboot.dal.repositories.UserRepository;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.InputMismatchException;
 
 @Controller
+@Slf4j
 public class UserController {
     @Autowired
     private UserRepository userRepository;
@@ -34,12 +38,15 @@ public class UserController {
     @PostMapping("/user/validate")
     public String validate(@Valid User user, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-//            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//            user.setPassword(encoder.encode(user.getPassword()));
-//            userRepository.save(user);
-            userRepository.hashPasswordAndSave(user);
-            model.addAttribute("users", userRepository.findAll());
-            return "redirect:/user/list";
+            try {
+                userRepository.hashPasswordAndSave(user);
+                model.addAttribute("users", userRepository.findAll());
+                return "redirect:/user/list";
+            } catch (InputMismatchException e) {
+                log.error("Error : {}", e.getMessage());
+                model.addAttribute("Error", e.getMessage());
+                return "user/add";
+            }
         }
         return "user/add";
     }
@@ -58,10 +65,6 @@ public class UserController {
         if (result.hasErrors()) {
             return "user/update";
         }
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        user.setPassword(encoder.encode(user.getPassword()));
-//        user.setId(id);
-//        userRepository.save(user);
         userRepository.hashPasswordAndSave(user);
         model.addAttribute("users", userRepository.findAll());
         return "redirect:/user/list";

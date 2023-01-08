@@ -2,8 +2,10 @@ package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.RuleName;
 import com.nnk.springboot.dal.entity.Trade;
+import com.nnk.springboot.service.LoginService;
 import com.nnk.springboot.service.RuleNameService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.event.spi.PreInsertEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,8 +30,11 @@ public class RuleNameController {
     @Autowired
     private RuleNameService ruleNameService;
 
+    @Autowired
+    private LoginService loginService;
+
     @RequestMapping("/ruleName/list")
-    public String home(Model model)
+    public String home(Model model, Principal user)
     {
         log.info("List of rulenames");
         try {
@@ -36,6 +42,7 @@ public class RuleNameController {
             List<RuleName> ruleNameList = new ArrayList<>();
             ruleNames.forEach(ruleNameList::add);
             model.addAttribute("rules", ruleNames);
+            model.addAttribute("username", loginService.getGitHub(user));
         } catch (NoSuchElementException e) {
             log.error("/ruleName/list : ",e.getMessage());
             model.addAttribute("Error", e.getMessage());

@@ -2,6 +2,7 @@ package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.Rating;
 import com.nnk.springboot.dal.entity.Trade;
+import com.nnk.springboot.service.LoginService;
 import com.nnk.springboot.service.RatingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,8 +29,11 @@ public class RatingController {
     @Autowired
     private RatingService ratingService;
 
+    @Autowired
+    private LoginService loginService;
+
     @RequestMapping("/rating/list")
-    public String home(Model model)
+    public String home(Model model, Principal user)
     {
         log.info("List of rating");
         try {
@@ -36,6 +41,7 @@ public class RatingController {
             List<Rating> ratingList = new ArrayList<>();
             ratings.forEach(ratingList::add);
             model.addAttribute("ratings", ratings);
+            model.addAttribute("username", loginService.getGitHub(user));
         } catch (NoSuchElementException e) {
             log.error("/rating/list : ",e.getMessage());
             model.addAttribute("Error", e.getMessage());
