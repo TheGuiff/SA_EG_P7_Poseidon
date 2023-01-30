@@ -6,7 +6,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -19,15 +18,19 @@ public class Rating {
     private Integer id;
 
     @Column(name = "moodys_rating")
+    @NotBlank(message = "Moody's rating id is mandatory")
     private String moodysRating;
 
     @Column(name = "sand_p_rating")
+    @NotBlank(message = "Sand rating id is mandatory")
     private String sandPRating;
 
     @Column(name = "fitch_rating")
+    @NotBlank(message = "Fitch rating id is mandatory")
     private String fitchRating;
 
     @Column(name = "order_number")
+    @NotNull(message = "Order number is mandatory")
     private Integer orderNumber;
 
     public Rating (String moodysRatingIn,

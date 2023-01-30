@@ -1,11 +1,9 @@
 package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.RuleName;
-import com.nnk.springboot.dal.entity.Trade;
 import com.nnk.springboot.service.LoginService;
 import com.nnk.springboot.service.RuleNameService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.event.spi.PreInsertEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,12 +59,13 @@ public class RuleNameController {
         if (!result.hasErrors()) {
             ruleNameService.saveRuleName(ruleName);
             model.addAttribute("rules", ruleNameService.getRuleNames());
+            return "ruleName/list";
         } else {
             List<ObjectError> errorList = result.getAllErrors();
             log.error("/ruleName/validate/ : ",errorList.get(0));
             model.addAttribute("error", errorList.get(0));
+            return "ruleName/add";
         }
-        return "ruleName/list";
     }
 
     @GetMapping("/ruleName/update/{id}")

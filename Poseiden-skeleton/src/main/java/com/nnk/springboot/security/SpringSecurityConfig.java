@@ -45,6 +45,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/add").hasAuthority("ADMIN")
                 .antMatchers("/user/validate").hasAuthority("ADMIN")
                 .antMatchers("/user/update").hasAuthority("ADMIN")
+                .antMatchers("/user/delete").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

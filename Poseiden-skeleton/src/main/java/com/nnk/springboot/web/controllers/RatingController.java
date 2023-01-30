@@ -1,7 +1,6 @@
 package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.Rating;
-import com.nnk.springboot.dal.entity.Trade;
 import com.nnk.springboot.service.LoginService;
 import com.nnk.springboot.service.RatingService;
 import lombok.extern.slf4j.Slf4j;
@@ -60,12 +59,13 @@ public class RatingController {
         if (!result.hasErrors()) {
             ratingService.saveRating(rating);
             model.addAttribute("ratings", ratingService.getRatings());
+            return "rating/list";
         } else {
             List<ObjectError> errorList = result.getAllErrors();
-            log.error("/rating/validate/ : ",errorList.get(0));
+            log.error("/rating/validate/ : ", errorList.get(0));
             model.addAttribute("error", errorList.get(0));
+            return "rating/add";
         }
-        return "rating/list";
     }
 
     @GetMapping("/rating/update/{id}")

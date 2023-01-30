@@ -1,8 +1,7 @@
 package com.nnk.springboot.security;
 
 import com.nnk.springboot.dal.entity.User;
-import com.nnk.springboot.dal.repositories.UserRepository;
-import net.bytebuddy.agent.builder.AgentBuilder;
+import com.nnk.springboot.dal.repositories.UserRepository;;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
