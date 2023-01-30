@@ -1,9 +1,9 @@
 package com.nnk.springboot.controller;
 
-import com.nnk.springboot.dal.entity.BidList;
-import com.nnk.springboot.service.BidListService;
+import com.nnk.springboot.dal.entity.RuleName;
 import com.nnk.springboot.service.LoginService;
-import com.nnk.springboot.web.controllers.BidListController;
+import com.nnk.springboot.service.RuleNameService;
+import com.nnk.springboot.web.controllers.RuleNameController;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
@@ -28,11 +28,11 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-@SpringBootTest(classes={BidListController.class})
-public class BidListControllerTest {
+@SpringBootTest(classes={RuleNameController.class})
+public class RuleControllerTest {
 
     @MockBean
-    private BidListService bidListService;
+    private RuleNameService ruleService;
 
     @MockBean
     private LoginService loginService;
@@ -47,37 +47,37 @@ public class BidListControllerTest {
     private Principal principal;
 
     @Autowired
-    private BidListController bidListController;
+    private RuleNameController ruleController;
 
-    private final BidList bidList = new BidList("account","type",20d);
-    private final BidList bidListFail = new BidList("account","type",20d);
+    private final RuleName rule = new RuleName("name","description","json","teù^late","sql","sqlp");
+    private final RuleName ruleFail = new RuleName("namefail","description","json","teù^late","sql","sqlp");
     private final ObjectError objectError = new ObjectError("errortest","errortest");
     private List<ObjectError> errorList = new ArrayList<>();
 
     @BeforeEach
     public void setup(){
-        when(bidListService.getBidList(isA(Integer.class))).thenReturn(Optional.of(bidList));
+        when(ruleService.getRuleName(isA(Integer.class))).thenReturn(Optional.of(rule));
         when(loginService.getGitHub(isA(Principal.class))).thenReturn("usertest");
-        doNothing().when(bidListService.saveBidList(isA(bidList.getClass())));
+        doNothing().when(ruleService.saveRuleName(isA(rule.getClass())));
     }
 
     @Test
     public void home(){
-        String result1 = bidListController.home(model, principal);
-        assertEquals("bidList/list", result1);
+        String result1 = ruleController.home(model, principal);
+        assertEquals("ruleName/list", result1);
     }
 
     @Test
-    public void addBidForm() {
-        String result2 = bidListController.addBidForm(bidList);
-        assertEquals("bidList/add", result2);
+    public void addRuleForm() {
+        String result2 = ruleController.addRuleForm(rule);
+        assertEquals("ruleName/add", result2);
     }
 
     @Test
     public void validateOK() {
         when(result.hasErrors()).thenReturn(false);
-        String result3 = bidListController.validate(bidList, result, model);
-        assertEquals("bidList/list", result3);
+        String result3 = ruleController.validate(rule, result, model);
+        assertEquals("ruleName/list", result3);
     }
 
     @Test
@@ -85,35 +85,36 @@ public class BidListControllerTest {
         errorList.add(objectError);
         when(result.hasErrors()).thenReturn(true);
         when(result.getAllErrors()).thenReturn(errorList);
-        String result3 = bidListController.validate(bidListFail, result, model);
-        assertEquals("bidList/add", result3);
+        String result3 = ruleController.validate(ruleFail, result, model);
+        assertEquals("ruleName/add", result3);
     }
 
     @Test
     public void showUpdateForm() {
-        String result4 = bidListController.showUpdateForm(isA(Integer.class), model);
-        assertEquals("bidList/update", result4);
+        String result4 = ruleController.showUpdateForm(isA(Integer.class), model);
+        assertEquals("ruleName/update", result4);
     }
 
     @Test
-    public void updateBidOK() {
+    public void updateRuleOK() {
         when(result.hasErrors()).thenReturn(false);
-        String result5 = bidListController.updateBid(1, bidList, result, model);
-        assertEquals("redirect:/bidList/list", result5);
+        String result5 = ruleController.updateRuleName(1, rule, result, model);
+        assertEquals("redirect:/ruleName/list", result5);
     }
 
     @Test
-    public void updateBidFail() {
+    public void updateRuleFail() {
         errorList.add(objectError);
         when(result.hasErrors()).thenReturn(true);
         when(result.getAllErrors()).thenReturn(errorList);
-        String result52 = bidListController.updateBid(1, bidListFail, result, model);
-        assertEquals("bidList/update", result52);
+        String result52 = ruleController.updateRuleName(1, ruleFail, result, model);
+        assertEquals("ruleName/update", result52);
     }
 
     @Test
-    public void deleteBid() {
-        String result6 = bidListController.deleteBid(isA(Integer.class), model);
-        assertEquals("redirect:/bidList/list", result6);
+    public void deleteRule() {
+        String result6 = ruleController.deleteRuleName(isA(Integer.class), model);
+        assertEquals("redirect:/ruleName/list", result6);
     }
+
 }

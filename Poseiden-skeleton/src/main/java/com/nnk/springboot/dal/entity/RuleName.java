@@ -5,7 +5,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -18,21 +17,27 @@ public class RuleName {
     private Integer id;
 
     @Column
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
     @Column
+    @NotBlank(message = "Description is mandatory")
     private String description;
 
     @Column
+    @NotBlank(message = "Json is mandatory")
     private String json;
 
     @Column
+    @NotBlank(message = "Template is mandatory")
     private String template;
 
     @Column(name = "sql_str")
+    @NotBlank(message = "SQL Str is mandatory")
     private String sqlStr;
 
     @Column(name = "sql_part")
+    @NotBlank(message = "SQL part is mandatory")
     private String sqlPart;
 
     public RuleName (String nameIn,

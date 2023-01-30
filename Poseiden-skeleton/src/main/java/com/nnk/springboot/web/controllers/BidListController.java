@@ -1,10 +1,8 @@
 package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.BidList;
-import com.nnk.springboot.dal.entity.Trade;
 import com.nnk.springboot.service.BidListService;
 import com.nnk.springboot.service.LoginService;
-import com.nnk.springboot.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.*;
@@ -59,12 +56,13 @@ public class BidListController {
         if (!result.hasErrors()) {
             bidListService.saveBidList(bid);
             model.addAttribute("bids", bidListService.getBidLists());
+            return "bidList/list";
         } else {
             List<ObjectError> errorList = result.getAllErrors();
             log.error("/bidList/validate/ : ",errorList.get(0));
             model.addAttribute("error", errorList.get(0));
+            return "bidList/add";
         }
-        return "bidList/list";
     }
 
     @GetMapping("/bidList/update/{id}")

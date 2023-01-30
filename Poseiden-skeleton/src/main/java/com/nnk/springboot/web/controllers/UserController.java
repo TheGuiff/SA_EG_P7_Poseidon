@@ -2,10 +2,8 @@ package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.User;
 import com.nnk.springboot.dal.repositories.UserRepository;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,7 +52,7 @@ public class UserController {
     @GetMapping("/user/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        user.setPassword("");
+        //user.setPassword("");
         model.addAttribute("user", user);
         return "user/update";
     }
@@ -65,9 +63,16 @@ public class UserController {
         if (result.hasErrors()) {
             return "user/update";
         }
-        userRepository.hashPasswordAndSave(user);
-        model.addAttribute("users", userRepository.findAll());
-        return "redirect:/user/list";
+        try {
+            userRepository.hashPasswordAndSave(user);
+            model.addAttribute("users", userRepository.findAll());
+            return "redirect:/user/list";
+        } catch (InputMismatchException e) {
+            log.error("Error : {}", e.getMessage());
+            model.addAttribute("Error", e.getMessage());
+            return "user/update";
+        }
+
     }
 
     @GetMapping("/user/delete/{id}")

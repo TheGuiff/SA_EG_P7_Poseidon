@@ -50,7 +50,7 @@ public class TradeController {
 
 
     @GetMapping("/trade/add")
-    public String addUser(Trade trade, Model model) {
+    public String addTradeForm(Trade trade) {
         return "trade/add";
     }
 
@@ -60,12 +60,13 @@ public class TradeController {
         if (!result.hasErrors()) {
             tradeService.saveTrade(trade);
             model.addAttribute("trades", tradeService.getTrades());
+            return "trade/list";
         } else {
             List<ObjectError> errorList = result.getAllErrors();
             log.error("/trade/validate/ : ",errorList.get(0));
             model.addAttribute("error", errorList.get(0));
+            return "trade/add";
         }
-        return "trade/list";
     }
 
     @GetMapping("/trade/update/{id}")

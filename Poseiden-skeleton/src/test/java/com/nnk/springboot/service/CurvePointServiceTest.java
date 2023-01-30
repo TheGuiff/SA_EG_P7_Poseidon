@@ -1,8 +1,6 @@
 package com.nnk.springboot.service;
 
-import com.nnk.springboot.dal.entity.BidList;
 import com.nnk.springboot.dal.entity.CurvePoint;
-import com.nnk.springboot.dal.repositories.BidListRepository;
 import com.nnk.springboot.dal.repositories.CurvePointRepository;
 import org.junit.Assert;
 import org.junit.Test;

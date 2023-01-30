@@ -1,7 +1,6 @@
 package com.nnk.springboot.web.controllers;
 
 import com.nnk.springboot.dal.entity.CurvePoint;
-import com.nnk.springboot.dal.entity.Trade;
 import com.nnk.springboot.service.CurvePointService;
 import com.nnk.springboot.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +49,7 @@ public class CurveController {
     }
 
     @GetMapping("/curvePoint/add")
-    public String addBidForm(CurvePoint curvePoint) {
+    public String addCurveForm(CurvePoint curvePoint) {
         return "curvePoint/add";
     }
 
@@ -60,12 +59,13 @@ public class CurveController {
         if (!result.hasErrors()) {
            curvePointService.saveCurvePoint(curvePoint);
             model.addAttribute("curves", curvePointService.getCurvedPoints());
+            return "curvePoint/list";
         } else {
             List<ObjectError> errorList = result.getAllErrors();
             log.error("/curvePoint/validate/ : ",errorList.get(0));
             model.addAttribute("error", errorList.get(0));
+            return "curvePoint/add";
         }
-        return "curvePoint/list";
     }
 
     @GetMapping("/curvePoint/update/{id}")
@@ -82,8 +82,8 @@ public class CurveController {
     }
 
     @PostMapping("/curvePoint/update/{id}")
-    public String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
-                             BindingResult result, Model model) {
+    public String updateCurve(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
+                              BindingResult result, Model model) {
         if (!result.hasErrors()) {
             curvePoint.setCurveId(id);
             curvePointService.saveCurvePoint(curvePoint);
@@ -97,7 +97,7 @@ public class CurveController {
     }
 
     @GetMapping("/curvePoint/delete/{id}")
-    public String deleteBid(@PathVariable("id") Integer id, Model model) {
+    public String deleteCurve(@PathVariable("id") Integer id, Model model) {
         log.info("Delete Curve Point by id : " + String.valueOf(id));
         try {
             curvePointService.deleteCurvePoint(id);

@@ -2,10 +2,8 @@ package com.nnk.springboot.dal.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
@@ -21,15 +19,18 @@ public class CurvePoint {
     private Integer id;
 
     @Column(name = "curve_id")
+    @NotNull(message = "Curve id is mandatory")
     private Integer curveId;
 
     @Column(name = "as_of_date")
     private Timestamp asOfDate;
 
     @Column
+    @NotNull(message = "Term id is mandatory")
     private Double term;
 
     @Column
+    @NotNull(message = "Value id is mandatory")
     private Double value;
 
     @Column(name = "creation_date")

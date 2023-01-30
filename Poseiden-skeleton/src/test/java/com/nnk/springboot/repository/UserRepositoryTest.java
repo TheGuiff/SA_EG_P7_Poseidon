@@ -4,7 +4,6 @@ import com.nnk.springboot.dal.entity.User;
 import com.nnk.springboot.dal.repositories.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,11 +21,6 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @AfterAll
-    public void initDataBase() {
-        userRepository.deleteAll();
-    }
-
     @Test
     public void userTest() {
         User user = new User("Name","123:Password","fullname","USER");
@@ -38,6 +32,7 @@ public class UserRepositoryTest {
 
         // Update
         user.setRole("ADMIN");
+        user.setPassword("Admin:1234");
         user = userRepository.hashPasswordAndSave(user);
         Assert.assertTrue(user.getRole().equals("ADMIN"));
 
@@ -50,5 +45,9 @@ public class UserRepositoryTest {
         userRepository.delete(user);
         Optional<User> userList = userRepository.findById(id);
         Assert.assertFalse(userList.isPresent());
+
+        //Vider la base
+        userRepository.deleteAll();
+
     }
 }

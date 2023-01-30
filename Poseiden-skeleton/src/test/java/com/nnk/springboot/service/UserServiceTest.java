@@ -35,11 +35,11 @@ public class UserServiceTest {
     public void userTest() {
         userRepository.deleteAll();
 
-        User user1 = new User("Name1","password1","FullName1","USER");
+        User user1 = new User("Name1","1234?Test1","FullName1","USER");
         userRepository.hashPasswordAndSave(user1);
-        User user2 = new User("Name2","password2","FullName2","USER");
+        User user2 = new User("Name2","1234?Test2","FullName2","USER");
         userRepository.hashPasswordAndSave(user2);
-        User user3 = new User("Name3","password3","FullName3","USER");
+        User user3 = new User("Name3","1234?Test3","FullName3","USER");
 
         //get all
         Iterable<User> userIterable = userService.getUsers();

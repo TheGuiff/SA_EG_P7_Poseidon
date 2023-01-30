@@ -2,12 +2,10 @@ package com.nnk.springboot.dal.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
-import java.sql.Date;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 @Getter
@@ -21,12 +19,15 @@ public class BidList {
     private Integer BidListId;
 
     @Column
+    @NotBlank(message = "Account is mandatory")
     private String account;
 
     @Column
+    @NotBlank(message = "Type is mandatory")
     private String type;
 
     @Column(name = "bid_quantity")
+    @NotNull(message = "Bid quantity is mandatory")
     Double bidQuantity;
 
     @Column(name = "ask_quantity")
